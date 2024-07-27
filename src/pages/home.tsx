@@ -52,15 +52,15 @@ export function Home() {
   }
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-pattern bg-center bg-no-repeat">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-pattern bg-center bg-no-repeat max-sm:pt-4">
       <header className="text-center">
-        <h1 className="text-4xl font-bold text-gray-300">
+        <h1 className="text-4xl font-bold text-gray-300 max-sm:px-20">
           Tailwind <span className="text-sky-400">Color</span> Finder!
         </h1>
         <p className="text-gray-500">Find the closest colors.</p>
       </header>
       <main>
-        <section className="m-auto mt-8 w-96">
+        <section className="m-auto mt-8 max-w-96 max-md:px-10">
           {error && (
             <label className="text-xs font-light text-red-500">{error}</label>
           )}
@@ -85,7 +85,7 @@ export function Home() {
           </form>
 
           {colors.length > 0 && (
-            <div className="mt-8">
+            <div className="mt-8 max-sm:pb-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-gray-300">
                   Closest Colors
@@ -98,7 +98,7 @@ export function Home() {
                   <Paintbrush size={16} />
                 </button>
               </div>
-              <div className="mt-4 flex flex-wrap gap-4">
+              <div className="mt-4 flex flex-wrap gap-4 max-sm:flex-col max-sm:items-center max-sm:justify-center">
                 {loading && <Skeleton />}
 
                 {!loading &&
