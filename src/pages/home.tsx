@@ -2,10 +2,11 @@ import { Paintbrush, Palette } from 'lucide-react'
 import React, { useState } from 'react'
 import { ColorOption } from '../components/colorOptions'
 import { Skeleton } from '../components/skeleton'
+import { Color } from '../mock/tailwindColors'
 import { findThreeNearestColors } from '../utils/findTailwindColor'
 
 export function Home() {
-  const [colors, setColors] = useState<string[]>([])
+  const [colors, setColors] = useState<Color[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -29,7 +30,7 @@ export function Home() {
     try {
       const tailwindFindColors = findThreeNearestColors(selectColor)
       if (tailwindFindColors.length > 0) {
-        setColors(tailwindFindColors.map((color) => color.name))
+        setColors(tailwindFindColors.map((color) => color))
       } else {
         console.log('No colors found')
       }
@@ -101,8 +102,12 @@ export function Home() {
                 {loading && <Skeleton />}
 
                 {!loading &&
-                  colors.map((color) => (
-                    <ColorOption key={color} colorName={color} />
+                  colors.map(({ name, value }) => (
+                    <ColorOption
+                      key={name}
+                      colorName={name}
+                      colorCode={value}
+                    />
                   ))}
               </div>
             </div>
