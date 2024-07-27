@@ -20,7 +20,7 @@ Tailwind Color Finder é um projeto desenvolvido para ajudar você a encontrar c
 
 
 ## Projeto no ar:
-<a target="_blank" href="https://react-with-styled-components.vercel.app/">Acessar</a>
+<a target="_blank" href="https://tailwind-color-finder-pearl.vercel.app/">Acessar</a>
 
 ## Contribuições
 
