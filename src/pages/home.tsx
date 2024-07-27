@@ -1,23 +1,53 @@
-import {
-  Paintbrush,
-  Paintbrush2,
-  Paintbrush2Icon,
-  Palette,
-  Trash,
-} from 'lucide-react'
-import React from 'react'
+import { Paintbrush, Palette } from 'lucide-react'
+import React, { useState } from 'react'
+import { ColorOption } from '../components/colorOptions'
 import { Skeleton } from '../components/skeleton'
+import { findThreeNearestColors } from '../utils/findTailwindColor'
 
 export function Home() {
+  const [colors, setColors] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setLoading(true)
+
     const formData = new FormData(event.currentTarget)
     const data = Object.fromEntries(formData) as {
       selectColor: string
     }
 
     const { selectColor } = data
-    console.log(selectColor)
+
+    if (!validateColor(selectColor)) {
+      setError('Invalid color format. Please enter a hex color code.')
+      setLoading(false)
+      return
+    }
+
+    try {
+      const tailwindFindColors = findThreeNearestColors(selectColor)
+      if (tailwindFindColors.length > 0) {
+        setColors(tailwindFindColors.map((color) => color.name))
+      } else {
+        console.log('No colors found')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    } finally {
+      setLoading(false)
+      setError(null)
+    }
+  }
+
+  function validateColor(color: string) {
+    return /^#[0-9A-F]{6}$/i.test(color)
+  }
+
+  function handleColorClear() {
+    setColors([])
+    setError(null)
   }
 
   return (
@@ -30,6 +60,9 @@ export function Home() {
       </header>
       <main>
         <section className="m-auto mt-8 w-96">
+          {error && (
+            <label className="text-xs font-light text-red-500">{error}</label>
+          )}
           <form className="flex gap-3" onSubmit={handleSubmit}>
             <div className="flex flex-1 items-center justify-center rounded-sm border border-transparent bg-zinc-900 px-4 py-2 transition-all hover:border-sky-400">
               <Palette size={20} className="text-gray-300" />
@@ -41,6 +74,7 @@ export function Home() {
                 placeholder="Enter a color..."
               />
             </div>
+
             <button
               type="submit"
               className="rounded-sm bg-sky-600 px-4 hover:bg-sky-500"
@@ -49,32 +83,30 @@ export function Home() {
             </button>
           </form>
 
-          <div className="mt-8">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-300">
-                Closest Colors
-              </h2>
-              <button className="rounded-sm border-2 border-transparent bg-gray-300 px-2 py-1 text-gray-950 transition-all hover:animate-shake hover:bg-gray-100">
-                <Paintbrush size={16} />
-              </button>
-            </div>
+          {colors.length > 0 && (
+            <div className="mt-8">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-300">
+                  Closest Colors
+                </h2>
+                <button
+                  type="button"
+                  onClick={handleColorClear}
+                  className="rounded-sm border-2 border-transparent bg-gray-300 px-2 py-1 text-gray-950 transition-all hover:animate-shake hover:bg-gray-100"
+                >
+                  <Paintbrush size={16} />
+                </button>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-4">
+                {loading && <Skeleton />}
 
-            <div className="mt-4 flex flex-wrap gap-4">
-              <Skeleton />
-              <div className="">
-                <div className="mb-1 h-20 w-24 rounded-sm border border-transparent bg-zinc-900 transition-all hover:border-sky-800"></div>
-                <span className="text-sm font-normal">Fuchsia-400</span>
-              </div>
-              <div className="">
-                <div className="mb-1 h-20 w-24 rounded-sm border border-transparent bg-zinc-900 transition-all hover:border-sky-800"></div>
-                <span className="text-sm font-normal">Fuchsia-400</span>
-              </div>
-              <div className="">
-                <div className="mb-1 h-20 w-24 rounded-sm border border-transparent bg-zinc-900 transition-all hover:border-sky-800"></div>
-                <span className="text-sm font-normal">Fuchsia-400</span>
+                {!loading &&
+                  colors.map((color) => (
+                    <ColorOption key={color} colorName={color} />
+                  ))}
               </div>
             </div>
-          </div>
+          )}
         </section>
       </main>
     </div>

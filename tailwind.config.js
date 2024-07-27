@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
+  safelist: [{ pattern: /^bg-/ }],
   theme: {
     extend: {
       fontFamily: {
@@ -16,6 +17,8 @@ export default {
       },
       animation: {
         shake: 'shake 0.82s cubic-bezier(.36,.07,.19,.97) both',
+        slideUp: 'slideUp 0.5s ease-out',
+        slideUpAndFadeOut: 'slideUpAndFadeOut 2s ease-out',
       },
       keyframes: {
         shake: {
@@ -31,6 +34,15 @@ export default {
           '40%, 60%': {
             transform: 'translate3d(2px, 0, 0)',
           },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideUpAndFadeOut: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '50%': { transform: 'translateY(0)', opacity: '1' },
+          '100%': { transform: 'translateY(-10px)', opacity: '0' },
         },
       },
     },
