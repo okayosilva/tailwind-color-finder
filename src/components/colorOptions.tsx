@@ -24,7 +24,7 @@ export function ColorOption({ colorName, colorCode }: ColorOptionProps) {
     <div className="relative flex flex-col max-sm:w-full">
       <div
         className={cn(
-          `mb-1 h-20 w-24 cursor-pointer rounded-sm border-2 border-transparent transition-all hover:border-sky-500 hover:shadow-[0_10px_18px_rgba(8,_112,_184,_0.7)] max-sm:w-full`,
+          `mb-1 h-20 w-28 cursor-pointer rounded-sm border-2 border-transparent transition-all hover:border-sky-500 hover:shadow-[0_10px_18px_rgba(8,_112,_184,_0.7)] max-md:w-full`,
           `bg-${colorName}`,
         )}
         onClick={() => getBgColor(colorName)}

@@ -40,6 +40,8 @@ export function Home() {
       setLoading(false)
       setError(null)
     }
+
+    event.currentTarget.reset()
   }
 
   function validateColor(color: string) {
@@ -98,7 +100,7 @@ export function Home() {
                   <Paintbrush size={16} />
                 </button>
               </div>
-              <div className="mt-4 flex flex-wrap gap-4 max-sm:flex-col max-sm:items-center max-sm:justify-center">
+              <div className="mt-4 flex flex-wrap justify-between gap-4 max-sm:flex-col max-sm:items-center max-sm:justify-center">
                 {loading && <Skeleton />}
 
                 {!loading &&
